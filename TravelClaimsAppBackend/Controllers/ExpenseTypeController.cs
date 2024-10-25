@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TravelClaimsAppBackend.Data;
 using TravelClaimsAppBackend.Models;
 
 namespace TravelClaimsAppBackend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ExpenseTypeController : ControllerBase
@@ -15,6 +17,7 @@ namespace TravelClaimsAppBackend.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Consultant")]
         [HttpGet]
         [Route("GetExpenseTypes")]
         public async Task<ActionResult<List<ExpenseType>>> GetExpenseTypes()
@@ -22,6 +25,7 @@ namespace TravelClaimsAppBackend.Controllers
             return await _context.ExpenseTypes.ToListAsync();
         }
 
+        [Authorize(Roles = "Consultant")]
         [HttpPost]
         [Route("AddExpenseType")]
         public async Task<ActionResult<ExpenseType>> AddExpenseType(ExpenseType newExpenseType)
@@ -31,6 +35,7 @@ namespace TravelClaimsAppBackend.Controllers
             return CreatedAtAction("GetExpenseTypes", newExpenseType);
         }
 
+        [Authorize(Roles = "Lead")]
         [HttpPut]
         [Route("UpdateExpenseType")]
         public async Task<IActionResult> UpdateExpenseType(int id, ExpenseType expenseType)
@@ -44,6 +49,7 @@ namespace TravelClaimsAppBackend.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Lead")]
         [HttpDelete]
         [Route("DeleteExpenseType")]
         public async Task<IActionResult> DeleteExpenseType(int id)

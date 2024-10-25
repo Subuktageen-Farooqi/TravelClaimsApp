@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TravelClaimsAppBackend.Data;
@@ -16,6 +17,7 @@ namespace TravelClaimsAppBackend.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Lead")]
         [HttpGet]
         [Route("GetProjects")]
         public async Task<ActionResult<List<Project>>> GetProjects()
@@ -23,6 +25,7 @@ namespace TravelClaimsAppBackend.Controllers
             return await _context.Projects.ToListAsync();
         }
 
+        [Authorize(Roles = "Lead")]
         [HttpPost]
         [Route("AddProject")]
         public async Task<ActionResult<Project>> AddProject(Project newProject)
@@ -32,6 +35,7 @@ namespace TravelClaimsAppBackend.Controllers
             return CreatedAtAction("GetProjects", newProject);
         }
 
+        [Authorize(Roles = "Lead")]
         [HttpPut]
         [Route("UpdateProject")]
         public async Task<IActionResult> UpdateProject(int id, Project project)
@@ -45,6 +49,7 @@ namespace TravelClaimsAppBackend.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Lead")]
         [HttpDelete]
         [Route("DeleteProject")]
         public async Task<IActionResult> DeleteProject(int id)

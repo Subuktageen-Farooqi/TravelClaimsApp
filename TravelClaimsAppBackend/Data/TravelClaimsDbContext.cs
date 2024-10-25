@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TravelClaimsAppBackend.Models;
 
 namespace TravelClaimsAppBackend.Data
 {
-    public class TravelClaimsDbContext: DbContext
+    public class TravelClaimsDbContext : IdentityDbContext<IdentityUser>
     {
         public TravelClaimsDbContext(DbContextOptions<TravelClaimsDbContext> options) : base(options)
         {
@@ -18,6 +20,7 @@ namespace TravelClaimsAppBackend.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Expense>()
                 .HasKey(e => new { e.ExpenseId });
 
